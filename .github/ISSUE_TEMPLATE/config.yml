@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: 安全问题（请勿公开）
-    url: https://github.com/guodongshang91-beep/ReverseKit/security/advisories/new
-    about: 发现本项目自身的安全问题，请走私密报告渠道
-  - name: 使用边界与免责
-    url: https://github.com/guodongshang91-beep/ReverseKit/blob/main/DISCLAIMER.md
-    about: 提交之前请先读一遍

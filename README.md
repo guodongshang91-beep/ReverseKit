@@ -180,6 +180,7 @@ ReverseKit/
 ├── examples/                # 可直接跑的输入样例（全部为占位目标）
 ├── assets/                  # banner / 架构图 / 演示图
 ├── requirements.txt
+├── check.py                 # 本地自检：编译 / CLI 冒烟 / 真实资产守卫 / pyflakes
 ├── LICENSE                  # MIT
 ├── DISCLAIMER.md            # 免责声明与合法用途
 └── CONTRIBUTING.md
@@ -273,12 +274,14 @@ USB HID 触摸屏），要 root 的还有四条。
 
 ## 贡献
 
-欢迎 PR。提交前请跑一遍自检：
+欢迎 PR。提交前跑一遍自检：
 
 ```bash
-python -m compileall modules     # 语法
-python -m pyflakes modules       # 静态检查（可选）
+python check.py          # 编译 + CLI 冒烟 + 真实资产守卫 + pyflakes
 ```
+
+四道检查有一项失败就退出 `1`：编译不过 / 工具 `-h` 崩 / 仓库里混进真实厂商域名或凭据 /
+静态检查有提示（最后一项只提示）。不依赖 GitHub Actions，本地跑就够。
 
 约定：脚本必须能 `-h` 自解释；不得内置任何真实厂商域名或他人资产；
 新增检测项必须同时给出**假阳性防线**。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。

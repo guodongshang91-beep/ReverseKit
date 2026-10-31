@@ -13,19 +13,21 @@
 ## 提交前自检
 
 ```bash
-# 语法
-python -m compileall -q modules && echo OK
-
-# 静态检查（可选但推荐）
-pip install pyflakes && python -m pyflakes modules
-
-# 自己跑一遍改动的脚本
-python modules/<mod>/<tool>.py -h
+python check.py            # 一次跑完：编译 / CLI 冒烟 / 真实资产守卫 / pyflakes
+python check.py --quick    # 只跑编译 + 守卫，改个字符串时够用
 ```
 
-CI 会跑 `compileall`（阻断）与 `pyflakes`（提示）。仓库当前**未启用** Actions——
-启用方法见 [docs/ci-notes.md](docs/ci-notes.md)。
-没开 CI 时请自己跑上面两条命令。
+`check.py` 四道检查：
+
+| # | 检查 | 是否阻断 |
+| --- | --- | --- |
+| 1 | `compileall` 全量字节编译 | 是 |
+| 2 | 每个命令行工具 `-h` 正常退出 | 是 |
+| 3 | 仓库内不得出现真实厂商域名 / 内网 IP / 凭据 | 是 |
+| 4 | `pyflakes` 静态检查（装了才跑） | 否，只提示 |
+
+它不依赖 GitHub Actions —— 本仓库暂未启用 Actions（原因见 [docs/ci-notes.md](docs/ci-notes.md)），
+所以**推之前请自己跑一遍**，退出码 `0` 才算干净。
 
 ---
 
