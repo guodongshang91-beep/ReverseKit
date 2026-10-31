@@ -24,7 +24,7 @@ python modules/<mod>/<tool>.py -h
 ```
 
 CI 会跑 `compileall`（阻断）与 `pyflakes`（提示）。仓库当前**未启用** Actions——
-启用方法见 [.github/workflows/README.md](.github/workflows/README.md)。
+启用方法见 [docs/ci-notes.md](docs/ci-notes.md)。
 没开 CI 时请自己跑上面两条命令。
 
 ---

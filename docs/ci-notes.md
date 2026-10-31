@@ -4,7 +4,7 @@
 本仓库首次发布所用的 token 只有 `repo` 权限，GitHub 直接拒收了 `ci.yml`（`refusing to
 allow a Personal Access Token to create or update workflow ... without workflow scope`）。
 
-**启用 CI 的方法**：把 [`docs/ci-template.yml`](../../docs/ci-template.yml) 复制成
+**启用 CI 的方法**：把 [`ci-template.yml`](ci-template.yml) 复制成
 `.github/workflows/ci.yml` 再提交——用带 `workflow` 权限的 token，或在网页端
 「Add file → Create new file」直接粘贴。
 
