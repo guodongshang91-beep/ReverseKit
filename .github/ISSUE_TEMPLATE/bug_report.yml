@@ -1,0 +1,45 @@
+name: Bug report
+description: 报告脚本报错、输出异常或与文档不符
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **不要贴真实目标信息。** 域名、IP、厂商名请替换成 `example.com`。
+        涉及安全问题的请走 SECURITY.md 的私密渠道。
+  - type: dropdown
+    id: module
+    attributes:
+      label: 涉及模块
+      options:
+        - web-recon
+        - src-hunt
+        - binary-re
+        - pe-patch
+        - wifi
+        - android
+        - 文档
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: 现象
+      description: 实际发生了什么，期望是什么
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现命令与完整输出
+      description: 粘命令 + 回显，脱敏后贴
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      placeholder: "Windows 11 / Python 3.13.12 / capstone 5.0.7"
+    validations:
+      required: true

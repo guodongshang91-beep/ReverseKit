@@ -1,0 +1,32 @@
+name: Feature request
+description: 新增探测规则、工具或文档
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        新增**检测规则**的请求，请务必填「假阳性防线」一栏 —— 只有正则没有防线的规则不会被合并。
+  - type: dropdown
+    id: module
+    attributes:
+      label: 目标模块
+      options: [web-recon, src-hunt, binary-re, pe-patch, wifi, android, 文档]
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: 它解决什么问题
+      description: 现在怎么做的、哪里不够
+    validations:
+      required: true
+  - type: textarea
+    id: fp
+    attributes:
+      label: 假阳性防线（检测类必填）
+      description: 基线比对？收紧正则？去重？WAF 页？回显识别？
+  - type: textarea
+    id: io
+    attributes:
+      label: 期望的输入与输出
+      render: shell

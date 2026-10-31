@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" width="1280" height="620" role="img" aria-label="ReverseKit 命令行演示">
+  <defs>
+    <style>
+      .m { font-family: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace; font-size: 15px; }
+      .mt { font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+    </style>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="620" rx="14" fill="#0b1120"/>
+  <rect x="0" y="0" width="1280" height="48" rx="14" fill="url(#bar)"/>
+  <rect x="0" y="34" width="1280" height="14" fill="url(#bar)"/>
+  <circle cx="30" cy="24" r="7" fill="#ef4444"/>
+  <circle cx="54" cy="24" r="7" fill="#f59e0b"/>
+  <circle cx="78" cy="24" r="7" fill="#22c55e"/>
+  <text class="mt" x="104" y="29" font-size="14" fill="#94a3b8">ReverseKit — bash</text>
+
+  <g class="m">
+    <!-- 1 -->
+    <text x="34" y="90" fill="#22d3ee">$</text>
+    <text x="52" y="90" fill="#e2e8f0">python elfkit.py info libfoo.so</text>
+    <text x="34" y="118" fill="#94a3b8">file      : libfoo.so</text>
+    <text x="34" y="142" fill="#94a3b8">class     : ELF64  LSB  AArch64</text>
+    <text x="34" y="166" fill="#94a3b8">sections  : 28   program headers: 12</text>
+    <text x="34" y="190" fill="#64748b">  .text      1   0x9c840   0x9b840   0x9c4f0</text>
+
+    <!-- 2 -->
+    <text x="34" y="238" fill="#22d3ee">$</text>
+    <text x="52" y="238" fill="#e2e8f0">python elfkit.py xref libfoo.so 0x54760</text>
+    <text x="34" y="266" fill="#a78bfa">  adrp+add</text>
+    <text x="146" y="266" fill="#94a3b8">file_off=0x9bc74   vaddr=0x9cc74   -&gt; 0x54760</text>
+    <text x="34" y="290" fill="#a78bfa">  adrp+add</text>
+    <text x="146" y="290" fill="#94a3b8">file_off=0x9bd54   vaddr=0x9cd54   -&gt; 0x54760</text>
+
+    <!-- 3 -->
+    <text x="34" y="338" fill="#22d3ee">$</text>
+    <text x="52" y="338" fill="#e2e8f0">python peck.py hunt sample.exe</text>
+    <text x="34" y="366" fill="#fbbf24">0x784b5c  off=0x78315c  [utf16] 授权文件未找到，程序将以试用模式运行</text>
+    <text x="34" y="390" fill="#fbbf24">0x784b8c  off=0x78318c  [utf16] 试用期已到期，请输入序列号</text>
+    <text x="34" y="414" fill="#34d399">2 candidate string(s) — 下一步用 xref 找谁引用了它们</text>
+
+    <!-- 4 -->
+    <text x="34" y="462" fill="#22d3ee">$</text>
+    <text x="52" y="462" fill="#e2e8f0">python peck.py patch sample.exe --rva 0x41a2c --hex 9090</text>
+    <text x="34" y="490" fill="#94a3b8">offset   : 0x40e2c  (rva 0x41a2c)</text>
+    <text x="34" y="514" fill="#94a3b8">before   : 7414</text>
+    <text x="34" y="538" fill="#94a3b8">after    : 9090</text>
+    <text x="34" y="562" fill="#94a3b8">backup   : sample.exe.bak</text>
+    <text x="34" y="586" fill="#34d399">verify   : 9090  OK</text>
+  </g>
+</svg>

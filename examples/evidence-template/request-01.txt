@@ -1,0 +1,8 @@
+GET /actuator/env HTTP/1.1
+Host: api.example.com
+User-Agent: ReverseKit/1.0
+Accept: */*
+Connection: close
+
+# 说明：粘原始请求，别改写。header 顺序、大小写都保持原样，
+# 这样别人复现时不会因为"看起来不一样"而怀疑报文被加工过。

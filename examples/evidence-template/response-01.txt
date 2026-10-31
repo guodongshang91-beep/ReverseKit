@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Server: nginx
+Content-Type: application/json;charset=UTF-8
+Content-Length: 1234
+
+{"_links":{"self":{"href":"http://api.example.com/actuator","templated":false}, ...}}
+
+# 说明：大响应只截前 4KB，末尾写总长度。
+# 若响应含个人信息，先打码再贴（手机号前3后4、身份证全遮、内网 IP 遮中间两位）。

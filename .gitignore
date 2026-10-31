@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+envs/
+
+# 运行时产物
+out/
+recon/
+loot/
+evidence/
+*.pcap
+*.pcapng
+*.cap
+*.22000
+*.hccapx
+*.dict
+wordlists/
+
+# 二进制与补丁产物
+*.bak
+*.patched
+*.patched.so
+*.so.bak
+*-patched*.apk
+*-aligned.apk
+*-unsigned.apk
+*.dex
+*.idsig
+
+# 分析中间产物
+*.idb
+*.i64
+*.gpr
+plt_map.json
+dis_tail.txt
+
+# 凭据与本地配置（绝不入库）
+.env
+config.local.*
+*.pem
+*.key
+*.jks
+*.keystore
+secrets.*
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 540" width="1280" height="540" role="img" aria-label="ReverseKit 模块架构图">
+  <defs>
+    <style>
+      .t { font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+      .mono { font-family: "Cascadia Code", Consolas, monospace; }
+    </style>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="540" fill="#f8fafc"/>
+  <rect x="0" y="0" width="1280" height="4" fill="url(#hdr)"/>
+
+  <text class="t" x="48" y="58" font-size="26" font-weight="700" fill="#0f172a">ReverseKit 分层架构</text>
+  <text class="t" x="48" y="86" font-size="15" fill="#64748b">从「资产」到「可复现证据」的一条链路，每一层都能单独用</text>
+
+  <!-- 层标签 -->
+  <g class="mono" font-size="13" fill="#94a3b8">
+    <text x="48" y="140">L1 采集 RECON</text>
+    <text x="48" y="300">L2 验证 VERIFY</text>
+    <text x="48" y="452">L3 交付 DELIVER</text>
+  </g>
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="48" y1="152" x2="1232" y2="152"/>
+    <line x1="48" y1="312" x2="1232" y2="312"/>
+    <line x1="48" y1="464" x2="1232" y2="464"/>
+  </g>
+
+  <!-- L1 四张卡 -->
+  <g>
+    <rect x="48" y="172" width="276" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="48" y="172" width="4" height="112" rx="2" fill="#0ea5e9"/>
+    <text class="mono" x="70" y="200" font-size="14" fill="#0284c7">web-recon</text>
+    <text class="t" x="70" y="226" font-size="13" fill="#475569">DNS/证书枚举 · 软404基线</text>
+    <text class="t" x="70" y="248" font-size="13" fill="#475569">JSONP 回调注入 · 响应头审计</text>
+    <text class="mono" x="70" y="270" font-size="12" fill="#94a3b8">dnsx · probe · jsonp_fuzz</text>
+
+    <rect x="344" y="172" width="276" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="344" y="172" width="4" height="112" rx="2" fill="#0ea5e9"/>
+    <text class="mono" x="366" y="200" font-size="14" fill="#0284c7">src-hunt</text>
+    <text class="t" x="366" y="226" font-size="13" fill="#475569">子域 → 指纹 → 未授权爆破</text>
+    <text class="t" x="366" y="248" font-size="13" fill="#475569">JS bundle 取密钥 · 参数注入</text>
+    <text class="mono" x="366" y="270" font-size="12" fill="#94a3b8">recon · unauth_scan · js_harvest</text>
+
+    <rect x="640" y="172" width="276" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="640" y="172" width="4" height="112" rx="2" fill="#0ea5e9"/>
+    <text class="mono" x="662" y="200" font-size="14" fill="#0284c7">wifi</text>
+    <text class="t" x="662" y="226" font-size="13" fill="#475569">错误密钥触发四次握手</text>
+    <text class="t" x="662" y="248" font-size="13" fill="#475569">M1/M2 提取 → 22000 格式</text>
+    <text class="mono" x="662" y="270" font-size="12" fill="#94a3b8">capture · analyze · gen_dict</text>
+
+    <rect x="936" y="172" width="296" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="936" y="172" width="4" height="112" rx="2" fill="#0ea5e9"/>
+    <text class="mono" x="958" y="200" font-size="14" fill="#0284c7">android</text>
+    <text class="t" x="958" y="226" font-size="13" fill="#475569">免 root 注入路线选型（A–F）</text>
+    <text class="t" x="958" y="248" font-size="13" fill="#475569">AAR 拆包 · 工程静态自检</text>
+    <text class="mono" x="958" y="270" font-size="12" fill="#94a3b8">aar_extract · res_check</text>
+  </g>
+
+  <!-- L2 两张卡 -->
+  <g>
+    <rect x="48" y="332" width="560" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="48" y="332" width="4" height="112" rx="2" fill="#8b5cf6"/>
+    <text class="mono" x="70" y="360" font-size="14" fill="#7c3aed">binary-re / elfkit</text>
+    <text class="t" x="70" y="386" font-size="13" fill="#475569">节表·符号 · 字符串→vaddr · 指针与 adrp+add 交叉引用</text>
+    <text class="t" x="70" y="408" font-size="13" fill="#475569">capstone 反汇编标注 · 定点补丁 + 回读校验</text>
+    <text class="mono" x="70" y="430" font-size="12" fill="#94a3b8">info · strings · xref · dis · patch</text>
+
+    <rect x="632" y="332" width="600" height="112" rx="12" fill="#ffffff" stroke="#dbe4ee"/>
+    <rect x="632" y="332" width="4" height="112" rx="2" fill="#8b5cf6"/>
+    <text class="mono" x="654" y="360" font-size="14" fill="#7c3aed">pe-patch / peck</text>
+    <text class="t" x="654" y="386" font-size="13" fill="#475569">关键词狩猎（试用/授权/序列号） · 指针 xref · 反汇编</text>
+    <text class="t" x="654" y="408" font-size="13" fill="#475569">最小侵入补丁：改字节 → 备份 → 回读验证</text>
+    <text class="mono" x="654" y="430" font-size="12" fill="#94a3b8">info · strings · hunt · xref · dis · patch</text>
+  </g>
+
+  <!-- L3 -->
+  <g>
+    <rect x="48" y="484" width="380" height="40" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+    <text class="t" x="68" y="510" font-size="13" fill="#047857">证据包　原始请求/响应 + 复现步骤</text>
+
+    <rect x="450" y="484" width="380" height="40" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text class="t" x="470" y="510" font-size="13" fill="#1d4ed8">候选清单　未验证项单独标记</text>
+
+    <rect x="852" y="484" width="380" height="40" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+    <text class="t" x="872" y="510" font-size="13" fill="#b91c1c">补丁与报告　带哈希、可回滚</text>
+  </g>
+
+  <!-- 箭头 -->
+  <g stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar)">
+    <path d="M186 290 L186 326"/>
+    <path d="M482 290 L482 326"/>
+    <path d="M778 290 L778 326"/>
+    <path d="M1084 290 L900 326"/>
+    <path d="M328 450 L328 478"/>
+    <path d="M760 450 L760 478"/>
+    <path d="M1062 450 L1062 478"/>
+  </g>
+
+  <!-- 贯穿全链的纪律条 -->
+  <rect x="48" y="112" width="1184" height="2" fill="none"/>
+</svg>
