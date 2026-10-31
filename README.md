@@ -20,13 +20,36 @@
 </p>
 
 <p align="center">
-  <a href="#-快速开始">快速开始</a> ·
-  <a href="#-模块速览">模块速览</a> ·
-  <a href="#-演示">演示</a> ·
-  <a href="#-核心方法论五道假阳性防线">方法论</a> ·
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#模块速览">模块速览</a> ·
+  <a href="#演示">演示</a> ·
+  <a href="#核心方法论五道假阳性防线">方法论</a> ·
   <a href="docs/">完整文档</a> ·
   <a href="CONTRIBUTING.md">贡献指南</a>
 </p>
+
+---
+
+<details>
+<summary><b>目录</b>（点开）</summary>
+
+- [为什么会有这个仓库](#为什么会有这个仓库)
+- [模块速览](#模块速览)
+- [快速开始](#快速开始)
+- [演示](#演示)
+- [核心方法论：五道假阳性防线](#核心方法论五道假阳性防线)
+- [项目结构](#项目结构)
+- [典型场景](#典型场景)
+- [设计原则](#设计原则)
+- [路线图](#路线图)
+- [贡献](#贡献)
+- [许可证与免责声明](#许可证与免责声明)
+
+文档：[快速开始](docs/00-quickstart.md) · [架构](docs/01-architecture.md) · [安装](docs/02-install.md) ·
+[模块手册](docs/03-modules.md) · [假阳性方法论](docs/04-false-positive.md) ·
+[实战 Playbook](docs/05-playbooks.md) · [合规边界](docs/06-legal.md) · [FAQ](docs/07-faq.md)
+
+</details>
 
 ---
 
