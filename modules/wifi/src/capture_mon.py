@@ -6,6 +6,11 @@
 # re-run the handshake. Deauth is optional: if the driver refuses injection we just wait
 # for a natural re-auth.
 
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import ctypes
 import os
 import struct

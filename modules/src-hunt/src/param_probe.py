@@ -10,6 +10,11 @@
 
 最小影响：只做单请求追加字符，不用 sleep/时间盲注压测，不提交任何数据。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import re
 import json
 import sys

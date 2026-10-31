@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: [main]
 
+# Windows runner 的 Python stdout 默认 cp1252，打印中文会 UnicodeEncodeError。
+# 工具内部已有 UTF-8 护栏（sys.stdout.reconfigure），这里再加一道环境变量双保险。
+env:
+  PYTHONIOENCODING: utf-8
+
 jobs:
   check:
-    name: py${{ matrix.python }} · compile + smoke
+    name: py${{ matrix.python }} · check.py
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,32 +33,15 @@ jobs:
           pip install -r requirements.txt
           pip install pyflakes
 
-      - name: Byte-compile every module
-        run: python -m compileall -q modules
-
-      - name: Static check (non-blocking)
-        run: python -m pyflakes modules || true
-
-      - name: CLI smoke — every tool must answer -h
-        shell: bash
-        run: |
-          set -e
-          python modules/binary-re/tools/elfkit.py -h    > /dev/null
-          python modules/pe-patch/tools/peck.py -h       > /dev/null
-          python modules/android/tools/aar_extract.py -h > /dev/null
-          python modules/web-recon/src/dnsx.py <<< ""    || true
-          echo "smoke ok"
+      # 与本地 `python check.py` 完全同一套标准：
+      #   1) compileall 全量字节编译
+      #   2) 12 个命令行工具 -h 冒烟
+      #   3) 真实资产 / 凭据守卫（厂商域名、内网 IP、云 AK、ghp token）
+      #   4) pyflakes（非阻断）
+      - name: check.py — same standard as local
+        run: python check.py
 
       - name: Real run — PE analysis on a system binary (Windows only)
         if: runner.os == 'Windows'
         shell: bash
-        run: |
-          python modules/pe-patch/tools/peck.py info "C:/Windows/System32/notepad.exe" | head -6
-
-      - name: Guard — no real-world target lists in the repo
-        shell: bash
-        run: |
-          if grep -rInE '\.(163|meituan|kuaishou|netease|jd|baidu)\.com' modules/ ; then
-            echo "::error::发现真实厂商域名，请改用占位符"; exit 1
-          fi
-          echo "clean"
+        run: python modules/pe-patch/tools/peck.py info "C:/Windows/System32/notepad.exe" | head -6

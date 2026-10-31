@@ -9,6 +9,11 @@
 
 只读：只下载 .DS_Store 本身并本地解析；后续是否请求清单里的文件由下一步决定。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import re
 import sys
 import json

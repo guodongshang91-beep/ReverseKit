@@ -9,6 +9,11 @@
 只读：仅下载目标自己的静态 JS，解析文本，不调用任何拿到的凭据去访问资源
 （调用=使用凭据，超出最小影响原则；验证阶段如需证明危害再做，且只做只读列举）。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import re
 import json
 import sys

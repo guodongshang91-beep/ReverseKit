@@ -9,6 +9,11 @@
 #   EAPOL is allowed through the 802.1X controlled port, so the frames reach NDIS
 #   and our Npcap filter sees a copy even though the link never comes up.
 
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import ctypes
 import os
 import struct

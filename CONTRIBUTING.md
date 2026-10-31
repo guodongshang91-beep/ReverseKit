@@ -26,8 +26,9 @@ python check.py --quick    # 只跑编译 + 守卫，改个字符串时够用
 | 3 | 仓库内不得出现真实厂商域名 / 内网 IP / 凭据 | 是 |
 | 4 | `pyflakes` 静态检查（装了才跑） | 否，只提示 |
 
-它不依赖 GitHub Actions —— 本仓库暂未启用 Actions（原因见 [docs/ci-notes.md](docs/ci-notes.md)），
-所以**推之前请自己跑一遍**，退出码 `0` 才算干净。
+CI（Ubuntu + Windows × Python 3.9 / 3.12）跑的就是同一个 `check.py`，
+所以本地 `exit 0` = CI 绿。**推之前请自己跑一遍**。历史上的两个坑记在
+[docs/ci-notes.md](docs/ci-notes.md)，其中一个是 Windows 的 cp1252 编码问题。
 
 ---
 

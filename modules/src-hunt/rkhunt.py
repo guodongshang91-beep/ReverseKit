@@ -25,6 +25,11 @@ rkhunt —— src-hunt 全链路编排器
     ├── param-hits.json     # 6 param
     └── targeted-hits.json  # 7 targeted
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import argparse
 import json
 import os

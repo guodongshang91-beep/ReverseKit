@@ -12,6 +12,11 @@
   ASP.NET/IIS → 常见后台、web.config、trace.axd
 只读探测，不爆破口令、不改数据。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import re
 import json
 import os

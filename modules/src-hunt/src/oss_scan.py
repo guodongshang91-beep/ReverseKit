@@ -9,6 +9,11 @@ GET /?max-keys=N 会返回 ListBucketResult XML —— 这是可直接提交的
 
 只读：仅列举对象 key 名，最多取 20 条，绝不下载对象内容。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import json
 import re
 import sys

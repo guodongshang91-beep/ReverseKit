@@ -8,6 +8,11 @@
 指纹规则集中在 FINGERPRINTS，命中即输出组件名（后续关联已知 CVE 与未授权风险面）。
 限速：默认 32 并发 + 每主机 8s 超时，不压测。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import json
 import re
 import sys

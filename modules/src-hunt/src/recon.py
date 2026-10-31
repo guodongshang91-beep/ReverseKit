@@ -13,6 +13,11 @@
 
 纪律：被动为主；爆破限速（默认 60 并发 + 每域间隔），不做端口扫描。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import json
 import re
 import sys

@@ -5,6 +5,11 @@
 
 同时作为 headers_check / jsonp_fuzz 的底层 raw() 提供者。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import http.client, ssl, socket, json, sys, re, urllib.parse, gzip, io
 from concurrent.futures import ThreadPoolExecutor
 

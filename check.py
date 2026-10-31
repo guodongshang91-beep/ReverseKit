@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-check.py —— 本地自检（等价于 CI，不依赖 GitHub Actions）
+check.py —— 本地自检（CI 跑的就是它，同一套标准）
 
     python check.py            # 全部检查
     python check.py --quick    # 只做编译 + 域名守卫
@@ -20,6 +20,10 @@ import re
 import shutil
 import subprocess
 import sys
+
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable

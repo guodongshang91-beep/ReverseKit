@@ -1,52 +1,67 @@
-# 关于 CI：为什么这里没有 ci.yml，以及现在怎么办
+# CI：现在跑什么，以及踩过的两个坑
 
-## 现状
+## 现状：CI 已启用
 
-推送 GitHub Actions 工作流文件时，Personal Access Token **必须带 `workflow` 权限**。
-本仓库发布时用过的两个 token 权限集完全相同，都**没有** `workflow`
-（`X-OAuth-Scopes` 里有 `repo`、`admin:org`、`delete_repo` 等，就是没有 `workflow`），
-GitHub 直接拒收：
+工作流文件：[`.github/workflows/ci.yml`](../.github/workflows/ci.yml)（本目录的
+[`ci-template.yml`](ci-template.yml) 是它的副本，留作引用）。
+
+矩阵 **Ubuntu + Windows × Python 3.9 / 3.12**，跑的是 `python check.py`——
+和本地自检**完全同一套标准**，避免「CI 说行、本地不行」：
+
+1. `compileall` 全量字节编译（阻断）
+2. 12 个命令行工具 `-h` 冒烟（阻断）
+3. 真实资产 / 凭据守卫：厂商域名、内网 IP、云 AK、`ghp_` token（阻断）
+4. `pyflakes`（装了才跑，非阻断）
+
+Windows 格外跑一次真实 PE 分析（`peck info notepad.exe`），验证 pefile 链路能用。
+
+---
+
+## 坑 1：Windows runner 上 `-h` 直接崩
+
+第一次跑 CI 时 Windows 两个格全挂，Ubuntu 全过：
+
+```text
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 52-58
+```
+
+原因是 **Windows 的 Python stdout 默认 `cp1252`**，而工具的 help 文本是中文，
+`argparse.print_help()` 一写就炸。开发机控制台是 UTF-8，所以本地永远复现不出来。
+
+这不是 CI 配置问题，是工具的跨平台缺陷。修法（已落到每个工具的开头）：
+
+```python
+import sys
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+```
+
+CI 里再加一道 `env: PYTHONIOENCODING: utf-8` 双保险。
+本地想复现这个 bug：`PYTHONIOENCODING=cp1252 python <tool>.py -h`。
+
+## 坑 2：token 缺 `workflow` 权限时推不上去
+
+GitHub 对 `.github/workflows/` 下**任何文件**都做保护，连 `README.md` 都算 workflow：
 
 ```text
 ! [remote rejected] main -> main (refusing to allow a Personal Access Token to
   create or update workflow `.github/workflows/ci.yml` without `workflow` scope)
 ```
 
-注意：这个限制覆盖 `.github/workflows/` 下**所有文件**，连一个 README.md 都算 workflow。
+当时发布用的 token 没有 `workflow`，所以 CI 一度只能写成模板放着。
+后来换成带 `workflow` 的 token（classic PAT 勾 `repo` + `workflow`，
+或 fine-grained 把 **Workflows** 设为 *Read and write*）后正常推送。
 
-## 所以：自检搬到了本地
-
-[`check.py`](../check.py) 把 CI 要干的事在本地做完了，不依赖 Actions：
+判断当前 token 有没有这个权限：
 
 ```bash
-python check.py            # 全跑
-python check.py --quick    # 只跑编译 + 守卫
+curl -s -D - -o /dev/null -H "Authorization: token $T" https://api.github.com/user \
+  | tr -d '\r' | grep -i x-oauth-scopes
 ```
 
-1. `compileall` 全量字节编译（阻断）
-2. 每个命令行工具 `-h` 冒烟（阻断）
-3. 真实厂商域名 / 内网 IP / 凭据守卫（阻断）
-4. `pyflakes` 静态检查（非阻断，装了才跑）
+输出里有 `workflow` 才行。
 
-## 想要真正的 Actions
+---
 
-两种办法，任选：
-
-**A. 网页端建文件（最快，1 分钟）**
-仓库页 → Add file → Create new file → 路径填 `.github/workflows/ci.yml`
-→ 把 [`ci-template.yml`](ci-template.yml) 的内容粘进去 → Commit。
-
-**B. 换一个带 `workflow` 权限的 token**
-Classic PAT：Settings → Developer settings → Tokens (classic) → 勾 `repo` + **`workflow`**。
-Fine-grained PAT：仓库权限里把 **Workflows** 设为 *Read and write*。
-拿到后正常 `git push` 即可，不需要改任何文件。
-
-## 模板内容
-
-1. `compileall`（阻断）
-2. `pyflakes`（提示）
-3. 各工具 `-h` 冒烟
-4. Windows runner 上跑一次真实 PE 分析（`peck info notepad.exe`）
-5. 守卫：仓库里出现真实厂商域名直接 fail
-
-矩阵：Ubuntu + Windows × Python 3.9 / 3.12。
+想改检查项？改 [`check.py`](../check.py) 一个文件就够，CI 和本地同步生效。

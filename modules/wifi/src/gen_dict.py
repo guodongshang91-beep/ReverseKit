@@ -8,6 +8,11 @@
 #   5) hybrid: dict + 4 trailing digits      (minutes)
 # Everything below is >= 8 chars: the WPA kernel refuses shorter candidates.
 
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import os
 
 OUT = os.environ.get("RK_DICT_OUT", "wordlists/common.dict")

@@ -14,6 +14,11 @@
          只匹配组件独有特征串。
       3) 响应去重：同一主机多个路径返回同一 md5 → 视为兜底页，丢弃。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import re
 import json
 import sys

@@ -19,6 +19,11 @@
     python targets.py                      # 打印本文件的示例清单
     python targets.py --csv my_scope.csv   # 从 CSV 读：domain,tier,owner
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import csv
 import sys
 

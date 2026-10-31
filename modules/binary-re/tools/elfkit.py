@@ -19,6 +19,11 @@ elfkit —— ELF 二进制侦察 / 反汇编 / 定点打补丁（Linux / Androi
     python elfkit.py dis    libfoo.so 0x2ad50 -n 60
     python elfkit.py patch  libfoo.so --vaddr 0x2ad74 --hex 1f2003d5
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import argparse
 import hashlib
 import os

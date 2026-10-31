@@ -22,6 +22,11 @@
     GpuDelegate 的构造签名依赖 GpuDelegateFactory，而它在 tensorflow-lite-gpu-api 里。
     漏了哪个，javac 会报「找不到符号」，那时回头看 .pom 的 <dependencies> 最快。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 
 import argparse
 import io

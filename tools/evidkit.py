@@ -27,6 +27,11 @@ evidkit —— 证据包与报告生成
 
 时间戳统一取系统本地时间，不手写——手写的日期是报告里最容易出错的部分。
 """
+import sys
+if hasattr(sys.stdout, "reconfigure"):   # Windows 控制台默认 cp1252，中文输出会直接崩
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import argparse
 import hashlib
 import json
