@@ -54,6 +54,17 @@
 
 ---
 
+## 介绍视频
+
+[<img src="https://github.com/guodongshang91-beep/ReverseKit/releases/download/v1.1.0/poster.jpg" width="100%" alt="ReverseKit 介绍视频">](https://github.com/guodongshang91-beep/ReverseKit/releases/download/v1.1.0/ReverseKit-intro.mp4)
+
+85 秒讲完一条链：三层结构 · 六个模块 · 五道假阳性防线 · 二进制定点补丁。
+
+- [**1080p 正片（85s）**](https://github.com/guodongshang91-beep/ReverseKit/releases/download/v1.1.0/ReverseKit-intro.mp4)
+- [无声预览 GIF](https://github.com/guodongshang91-beep/ReverseKit/releases/download/v1.1.0/intro-preview.gif) · [封面帧](https://github.com/guodongshang91-beep/ReverseKit/releases/download/v1.1.0/poster.jpg)
+
+---
+
 ## 为什么会有这个仓库
 
 工具不缺。缺的是**「命中之后怎么办」**。
