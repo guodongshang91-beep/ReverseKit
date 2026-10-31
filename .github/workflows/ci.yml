@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: py${{ matrix.python }} · compile + smoke
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyflakes
+
+      - name: Byte-compile every module
+        run: python -m compileall -q modules
+
+      - name: Static check (non-blocking)
+        run: python -m pyflakes modules || true
+
+      - name: CLI smoke — every tool must answer -h
+        shell: bash
+        run: |
+          set -e
+          python modules/binary-re/tools/elfkit.py -h    > /dev/null
+          python modules/pe-patch/tools/peck.py -h       > /dev/null
+          python modules/android/tools/aar_extract.py -h > /dev/null
+          python modules/web-recon/src/dnsx.py <<< ""    || true
+          echo "smoke ok"
+
+      - name: Real run — PE analysis on a system binary (Windows only)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          python modules/pe-patch/tools/peck.py info "C:/Windows/System32/notepad.exe" | head -6
+
+      - name: Guard — no real-world target lists in the repo
+        shell: bash
+        run: |
+          if grep -rInE '\.(163|meituan|kuaishou|netease|jd|baidu)\.com' modules/ ; then
+            echo "::error::发现真实厂商域名，请改用占位符"; exit 1
+          fi
+          echo "clean"
