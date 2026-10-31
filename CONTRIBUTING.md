@@ -23,7 +23,9 @@ pip install pyflakes && python -m pyflakes modules
 python modules/<mod>/<tool>.py -h
 ```
 
-CI 会跑 `compileall` 与 `pyflakes`，失败会挡合并。
+CI 会跑 `compileall`（阻断）与 `pyflakes`（提示）。仓库当前**未启用** Actions——
+启用方法见 [.github/workflows/README.md](.github/workflows/README.md)。
+没开 CI 时请自己跑上面两条命令。
 
 ---
 

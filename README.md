@@ -7,6 +7,7 @@
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.9%2B-38bdf8.svg" alt="Python"></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-8b5cf6.svg" alt="Platform">
   <img src="https://img.shields.io/badge/modules-6-a78bfa.svg" alt="Modules">
+  <img src="https://img.shields.io/badge/deps-zero%20heavy-34d399.svg" alt="Zero heavy deps">
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-34d399.svg" alt="PRs"></a>
   <img src="https://img.shields.io/badge/lang-中文-red.svg" alt="中文">
 </p>
