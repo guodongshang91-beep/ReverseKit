@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-22d3ee.svg" alt="License"></a>
+  <a href="https://github.com/guodongshang91-beep/ReverseKit/actions/workflows/ci.yml"><img src="https://github.com/guodongshang91-beep/ReverseKit/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.9%2B-38bdf8.svg" alt="Python"></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-8b5cf6.svg" alt="Platform">
   <img src="https://img.shields.io/badge/modules-6-a78bfa.svg" alt="Modules">
