@@ -26,6 +26,8 @@ PY = sys.executable
 
 # 必须有 -h 且退出 0 的入口
 CLI = [
+    "modules/src-hunt/rkhunt.py",
+    "tools/evidkit.py",
     "modules/binary-re/tools/elfkit.py",
     "modules/pe-patch/tools/peck.py",
     "modules/android/tools/aar_extract.py",

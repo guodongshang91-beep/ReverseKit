@@ -35,7 +35,36 @@
 
 `--workers` 默认值不高（8~28）。**别开太大**：目标侧看到的是流量，你只是自己图快。
 
+### 编排器 rkhunt
+
+```text
+rkhunt list                                   # 阶段与依赖
+rkhunt run --scope scope.csv [--workdir loot] # 全跑
+rkhunt run ... --only recon,probe             # 只跑指定阶段
+rkhunt run ... --skip oss,param               # 跳过指定阶段
+rkhunt run ... --dry-run                      # 只打印命令
+rkhunt run ... --keep-going                   # 失败也继续
+rkhunt status --workdir loot                  # 每阶段 exit/耗时/条数
+```
+
+阶段依赖：`recon → subs → probe → alive → {unauth, js, param, targeted}`，`oss` 只依赖 `subs`。
+每阶段状态写进 `<workdir>/run.json`。
+
 ---
+
+## tools/evidkit（证据包与报告）
+
+```text
+evidkit new    --id VULN-001 --host api.example.com --path /actuator/env --level 中危 --type 未授权访问
+evidkit add    --id VULN-001 --request req.txt --response resp.txt [--note 换出口]
+evidkit seal   --id VULN-001          # 生成 hash.txt（sha256 + 字节数）
+evidkit verify --id VULN-001          # 复核，被改过就 exit 1
+evidkit report --id VULN-001 [--out report.md]
+```
+
+全局参数 `--dir` 指定证据根目录（默认 `evidence/`）。
+`report` 从 `meta.json` + 最后一次抓包 + `verify-notes.md` 渲染，
+抓包不足两次会提示「未完成独立复现」。
 
 ## binary-re / elfkit
 

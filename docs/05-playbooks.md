@@ -27,6 +27,15 @@ web.config 泄露（低危）
 
 ### 步骤
 
+一条命令先跑通全链（详细分步见下）：
+
+```bash
+python modules/src-hunt/rkhunt.py run --scope scope.csv --workdir loot
+python modules/src-hunt/rkhunt.py status --workdir loot
+```
+
+手动分步：
+
 ```bash
 cd modules/src-hunt/src
 
@@ -188,12 +197,29 @@ apksigner sign --ks my.jks aligned.apk
 
 ```text
 evidence/<VULN-ID>/
+├── meta.json             元信息 + 每次抓包的 sha256/长度/时间
 ├── request-01.txt        原始请求（方法/路径/全部 header）
 ├── response-01.txt       原始响应（状态码/header/正文；大文件截前 4KB + 总长度）
 ├── request-02.txt        第二次独立会话（换 UA / 换出口）
 ├── response-02.txt
-├── verify-notes.md       时间、会话、复现步骤、影响面、修复建议
-└── hash.txt              sha256 清单（证明文件没被改过）
+├── verify-notes.md       复现步骤、影响面、五问排除记录
+├── hash.txt              sha256 清单（seal 生成）
+└── report.md             由 meta.json + notes 渲染（report 生成）
 ```
+
+别手动建这套目录，用工具：
+
+```bash
+E="python tools/evidkit.py"
+$E new --id VULN-001 --host api.example.com --path /actuator/env --type 未授权访问 --level 中危
+$E add --id VULN-001 --request req1.txt --response resp1.txt --note 第一次
+$E add --id VULN-001 --request req2.txt --response resp2.txt --note 换出口
+$E seal   --id VULN-001        # 封存清单
+$E verify --id VULN-001        # 事后复核，文件被动过就 exit 1
+$E report --id VULN-001        # 出 Markdown 报告
+```
+
+`add` 只往目录里拷文件并记哈希，**不改你的原始报文**；`seal` 之后再改任何文件，
+`verify` 都会指出来。
 
 **目录里没有这些，就不算发现。** 这条纪律比任何工具都重要。

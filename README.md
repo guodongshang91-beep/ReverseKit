@@ -96,11 +96,16 @@ pip install -r requirements.txt          # requests / dnspython / capstone / pef
 # 1) 域名侦察：DNS 记录里找内网泄露与接管面
 python modules/web-recon/src/dnsx.py example.com
 
-# 2) 二进制：字符串 → 交叉引用，一条链走到位
+# 2) 整条链路一条命令（recon → probe → unauth/oss/js/param/targeted）
+python modules/src-hunt/rkhunt.py run --scope examples/scope.csv --dry-run   # 先看计划
+python modules/src-hunt/rkhunt.py run --scope scope.csv --workers 24
+python modules/src-hunt/rkhunt.py status                                    # 看产物与计数
+
+# 3) 二进制：字符串 → 交叉引用，一条链走到位
 python modules/binary-re/tools/elfkit.py strings libfoo.so -m 6 -f licen
 python modules/binary-re/tools/elfkit.py xref   libfoo.so 0x2a1c0
 
-# 3) PE：授权检查关键词狩猎
+# 4) PE：授权检查关键词狩猎
 python modules/pe-patch/tools/peck.py hunt app.exe
 ```
 
@@ -167,6 +172,7 @@ ReverseKit/
 │   ├── web-recon/           # 黑盒侦察：DNS / 存活 / 软404 / JSONP / 响应头
 │   │   └── src/{dnsx,probe,jsonp_fuzz,headers_check}.py
 │   ├── src-hunt/            # 广撒网 + 假阳性过滤
+│   │   ├── rkhunt.py        # 全链路编排器（run / status / list）
 │   │   └── src/{recon,probe,unauth_scan,oss_scan,js_harvest,param_probe,targeted,targets,dsstore_parse}.py
 │   ├── binary-re/           # ELF/.so 静态分析
 │   │   └── tools/elfkit.py
@@ -176,6 +182,8 @@ ReverseKit/
 │   │   └── src/{capture,capture_mon,analyze,gen_dict}.py
 │   └── android/             # 免 root 注入选型与工程自检
 │       └── tools/{aar_extract,res_check,syntax_check}.py
+├── tools/
+│   └── evidkit.py           # 证据包（new/add/seal/verify）+ 报告渲染（report）
 ├── docs/                    # 快速开始 / 架构 / 安装 / 模块手册 / 方法论 / 实战 / 合规 / FAQ
 ├── examples/                # 可直接跑的输入样例（全部为占位目标）
 ├── assets/                  # banner / 架构图 / 演示图
@@ -265,10 +273,12 @@ USB HID 触摸屏），要 root 的还有四条。
 - [x] 六个模块骨架 + 统一 CLI 风格
 - [x] 假阳性五道防线固化为可复用实现
 - [x] `elfkit` / `peck` 双端二进制工具
-- [ ] 证据包自动归档（`evidence/` 目录 + 哈希清单）
-- [ ] `src-hunt` 全链路一键编排（`rkhunt run --scope scope.csv`）
-- [ ] 报告模板生成（Markdown / 平台表单字段映射）
-- [ ] 更多栈指纹（Nacos 2.x / MinIO 新版 / K8s Dashboard）
+- [x] `src-hunt` 全链路一键编排（`rkhunt run --scope scope.csv`）
+- [x] 证据包自动归档（`evidkit new/add/seal/verify`，sha256 清单）
+- [x] 报告模板生成（`evidkit report`，从 meta.json + 抓包渲染）
+- [x] 栈指纹扩到 57 条（Nacos 2.x / MinIO / K8s Dashboard / Harbor / Consul / XXL-JOB…）
+- [ ] 平台表单字段映射（把报告直接填成提交表单）
+- [ ] 被动流量分析（从已有 pcap 反推资产，不主动发包）
 
 ---
 

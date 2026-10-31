@@ -14,6 +14,7 @@
 """
 import re
 import json
+import os
 import sys
 import argparse
 import concurrent.futures as cf
@@ -160,9 +161,22 @@ def run(host, stack, vendor):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="../recon/targeted-hits.json")
+    ap.add_argument("--targets", default="",
+                    help="probe.py 产出的 alive.json；不给则用内置 TARGETS（占位示例）")
     ap.add_argument("--extra", default="", help="host:stack:vendor,host:stack:vendor")
     a = ap.parse_args()
-    todo = list(TARGETS)
+    if a.targets:
+        todo = [t for t in load_targets(a.targets) if t[1] not in ("", "generic")]
+        if not todo:
+            # 没有带栈指纹的主机 = 没活干，不是失败（编排器会把非 0 当失败）
+            print("[i] alive.json 里没有带 stack 的主机，跳过深度探测")
+            print("[i] 先确认 probe.py 的 FINGERPRINTS 命中情况：alive.json 的 components 字段")
+            if os.path.dirname(a.out):
+                os.makedirs(os.path.dirname(a.out), exist_ok=True)
+            json.dump([], open(a.out, "w", encoding="utf-8"))   # 产物契约：永远有文件
+            return 0
+    else:
+        todo = list(TARGETS)
     for item in a.extra.split(","):
         if item.strip():
             h, s, v = (item.split(":") + ["?", "?"])[:3]
@@ -178,6 +192,8 @@ def main():
                 print(f"[!] {h}: {type(e).__name__}", file=sys.stderr)
                 res = []
             out.extend(res)
+    if os.path.dirname(a.out):
+        os.makedirs(os.path.dirname(a.out), exist_ok=True)
     json.dump(out, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     order = {"高危": 0, "中危": 1, "低危": 2, "info": 3}
     for x in sorted(out, key=lambda a: order.get(a["level"], 9)):

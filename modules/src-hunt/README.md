@@ -3,7 +3,23 @@
 > 本模块解决的是「扫描器命中一大堆，但全是假的」。
 > 五道防线内建在脚本里，不是文档里的口号。
 
-## 链路
+## 一键跑（推荐）
+
+```bash
+python rkhunt.py list                                    # 看阶段定义与依赖
+python rkhunt.py run --scope ../../examples/scope.csv --dry-run   # 只打印命令，不发包
+python rkhunt.py run --scope scope.csv --workdir loot    # 全跑
+python rkhunt.py run --workdir loot --only recon,probe   # 只跑前两段
+python rkhunt.py run --workdir loot --skip oss,param     # 跳过耗时的
+python rkhunt.py status --workdir loot                   # 每阶段 exit / 耗时 / 条数
+```
+
+产物统一落在 `--workdir`（默认 `loot/`），每阶段结束就把 `exit / 耗时 / 条数` 写进
+`loot/run.json`，断了重跑会自动跳过已有前置产物的判断，不会重复轰炸目标。
+
+`--keep-going` 让某段失败后继续跑后面的；默认一失败就停（省得在错的输入上继续）。
+
+## 手动串（想知道每一步在干什么时用）
 
 ```bash
 cd src
